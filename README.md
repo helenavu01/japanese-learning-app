@@ -1,136 +1,43 @@
-# 🗾 Japanese Learning App - MVP
+# 🗾 Sổ từ vựng Nhật
 
-Ứng dụng học tiếng Nhật với flashcard + quiz random. Thêm từ vựng vào ứng dụng để ôn tập hàng ngày.
+Sổ từ vựng tiếng Nhật cá nhân, chạy dưới dạng một **Artifact trên claude.ai**. Không có server riêng, không có database ngoài, không gọi API trả phí.
 
-## 🎯 Công dụng chính
+**Link:** https://claude.ai/artifact/2A1PvPwiQKBqX4m3Lqerf3 (riêng tư, chỉ chủ tài khoản mở được)
 
-- **Flashcard + Quiz**: Mỗi ngày vài phút làm quiz từ random
-- **Học tập hiệu quả**: Từ từ nhiều ngày khác nhau, có giải thích chi tiết
-- **Dễ thêm từ**: Thêm từ vựng qua giao diện hoặc qua API
+## Tính năng
 
-## 🏗️ Kiến trúc
+- **Ôn tập:** hỏi từ tiếng Nhật, chọn 1 trong 4 nghĩa tiếng Việt. Sau mỗi câu giải thích **cả đáp án đúng lẫn từng đáp án sai** (nghĩa đó thuộc từ nào, vì sao từ đang hỏi không mang nghĩa đó). Từ hay trả lời sai được ưu tiên ra lại. Lọc theo mức N5–N1, phím 1–4 để chọn, Enter để sang câu tiếp.
+- **Từ vựng:** tìm kiếm, lọc theo mức, xem chi tiết, sửa, xóa.
+- **Thêm từ:** nhập tay từng từ, hoặc dán JSON do Claude tạo để nhập nhiều từ cùng lúc (từ trùng được bỏ qua).
+- **Đồng bộ:** dữ liệu lưu trong kho riêng của tài khoản (`db` của Artifact), nên các thiết bị đăng nhập cùng tài khoản thấy cùng danh sách và không mất khi cập nhật trang.
 
-```
-japanese-learning-app/
-├── backend/              # Node.js + Express API
-│   ├── server.js         # API endpoints
-│   ├── package.json
-│   └── .env.example
-├── frontend/             # React + Vite
-│   ├── src/
-│   │   ├── components/   # Home, Quiz, VocabularyList, AddVocabulary
-│   │   ├── App.jsx
-│   │   └── index.css
-│   ├── index.html
-│   └── vite.config.js
-└── docs/                 # Tài liệu
-```
+## Dữ liệu
 
-## 🚀 Cài đặt & Chạy
+Mỗi từ là một document tại `data/users/<id>/profile/words/<docId>`:
 
-### 1. Cài đặt Backend
+| Trường | Ý nghĩa |
+|---|---|
+| `word`, `reading`, `meaning` | từ, cách đọc, nghĩa tiếng Việt (`word` và `meaning` bắt buộc) |
+| `example`, `example_vi` | câu ví dụ và nghĩa |
+| `level` | N5, N4, N3, N2 hoặc N1 |
+| `explanation` | giải thích cách dùng, hiện sau khi trả lời |
+| `confusion` | từ dễ nhầm và cách phân biệt |
+| `seen`, `right`, `created` | số lượt ôn, số lượt đúng, thời điểm tạo |
 
-```bash
-cd backend
-npm install
-npm start
-# Server chạy tại http://localhost:5000
-```
+## Thêm từ bằng Claude (không tốn API)
 
-### 2. Cài đặt Frontend
+Trong tab **Thêm từ**, bấm "Sao chép yêu cầu", gửi cho Claude trong một cuộc trò chuyện (đổi `[CHỦ ĐỀ]`), rồi dán mảng JSON trả về vào app. Việc này dùng hạn mức gói Claude của bạn, không dùng API key.
 
-```bash
-cd frontend
-npm install
-npm run dev
-# App chạy tại http://localhost:3000
-```
+## Chi phí
 
-### 3. Thêm từ vựng
+Không có. App không phụ thuộc Railway, Vercel hay dịch vụ nào khác. Nên tắt **Extra usage** trong claude.ai → Settings → Usage để vượt hạn mức gói thì dừng thay vì bị tính phí.
 
-**Qua UI**: Vào tab "Thêm từ" → điền thông tin → submit
+## Lịch sử
 
-**Qua API**:
-```bash
-curl -X POST http://localhost:5000/api/vocabulary \
-  -H "Content-Type: application/json" \
-  -d '{
-    "word_ja": "友達",
-    "reading": "ともだち",
-    "meaning_vi": "Bạn bè",
-    "example": "友達と一緒に行く",
-    "example_meaning": "Đi cùng bạn bè",
-    "level": "N4"
-  }'
-```
-
-## 📋 API Endpoints
-
-| Method | Endpoint | Mô tả |
-|--------|----------|-------|
-| GET | `/api/vocabulary` | Lấy danh sách tất cả từ |
-| POST | `/api/vocabulary` | Thêm từ vựng mới |
-| GET | `/api/quiz/random` | Lấy 1 quiz random |
-| POST | `/api/quiz/:id/answer` | Ghi nhận đáp án |
-| GET | `/api/stats` | Lấy thống kê |
-
-## 🎓 Cách sử dụng
-
-1. **Mở ứng dụng**: http://localhost:3000
-2. **Thêm từ vựng**: Tab "Thêm từ" → điền thông tin từ vựng
-3. **Làm bài tập**: Tab "Quiz" → chọn đáp án → xem giải thích
-4. **Xem danh sách**: Tab "Danh sách" → review tất cả từ đã học
-5. **Tracking**: Tab "Home" → xem stats (tổng từ, bài tập làm, độ chính xác)
-
-## 🔧 Tính năng MVP
-
-- ✅ Thêm từ vựng (qua giao diện hoặc API)
-- ✅ Quiz random với 4 đáp án
-- ✅ Giải thích chi tiết (ví dụ, cách dùng)
-- ✅ Danh sách từ đã học
-- ✅ Thống kê (tổng từ, % đúng)
-- ⏳ SRS (Space Repetition System) - v2 sau
-- ⏳ Import CSV từ bên ngoài - v2 sau
-
-## 🔐 Environment Variables
-
-Tạo file `.env` trong folder `backend`:
-
-```
-PORT=5000
-```
-
-## 📱 Mobile-friendly
-
-Frontend đã responsive với mobile. Deploy lên Vercel/Netlify để sử dụng trên điện thoại.
-
-## 🚀 Deploy
-
-**Frontend** (Vercel):
-```bash
-cd frontend
-npm run build
-# Deploy build/ folder to Vercel
-```
-
-**Backend** (Railway/Render):
-```bash
-cd backend
-npm start
-```
-
-## 📝 Tương lai (v2+)
-
-- [ ] SRS (spaced repetition)
-- [ ] Heatmap học tập
-- [ ] Import/Export CSV
-- [ ] Mobile app (React Native)
-- [ ] Authentication & cloud sync
-- [ ] Lịch học (daily reminder)
-- [ ] Phát âm (audio từ)
+Bản đầu tiên là app React + Express triển khai trên Vercel và Railway. Bản đó đã được bỏ và xóa khỏi repo. Muốn xem lại code cũ, dùng `git log` rồi checkout commit `45dc6cd`.
 
 ---
 
 **Tác giả**: Helen & Tien  
-**Ngôn ngữ**: Tiếng Nhật + Tiếng Việt + Code (Tiếng Anh)  
+**Ngôn ngữ**: Tiếng Nhật + Tiếng Việt  
 **License**: MIT
