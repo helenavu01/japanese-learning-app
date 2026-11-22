@@ -1,12 +1,12 @@
 # 🗾 Japanese Learning App - MVP
 
-Ứng dụng học tiếng Nhật với flashcard + quiz random. Hỏi từ vựng qua Claude → tự động cập nhật vào ứng dụng để ôn tập hàng ngày.
+Ứng dụng học tiếng Nhật với flashcard + quiz random. Thêm từ vựng vào ứng dụng để ôn tập hàng ngày.
 
 ## 🎯 Công dụng chính
 
 - **Flashcard + Quiz**: Mỗi ngày vài phút làm quiz từ random
 - **Học tập hiệu quả**: Từ từ nhiều ngày khác nhau, có giải thích chi tiết
-- **Tự động cập nhật**: Hỏi từ vựng qua Claude → tự động lưu vào database
+- **Dễ thêm từ**: Thêm từ vựng qua giao diện hoặc qua API
 
 ## 🏗️ Kiến trúc
 
@@ -46,11 +46,11 @@ npm run dev
 # App chạy tại http://localhost:3000
 ```
 
-### 3. Thêm từ vựng (thủ công hoặc qua Claude)
+### 3. Thêm từ vựng
 
 **Qua UI**: Vào tab "Thêm từ" → điền thông tin → submit
 
-**Qua API** (khi Claude tự động gọi):
+**Qua API**:
 ```bash
 curl -X POST http://localhost:5000/api/vocabulary \
   -H "Content-Type: application/json" \
@@ -77,14 +77,14 @@ curl -X POST http://localhost:5000/api/vocabulary \
 ## 🎓 Cách sử dụng
 
 1. **Mở ứng dụng**: http://localhost:3000
-2. **Thêm từ vựng**: Tab "Thêm từ" → paste từ hoặc hỏi Claude
+2. **Thêm từ vựng**: Tab "Thêm từ" → điền thông tin từ vựng
 3. **Làm bài tập**: Tab "Quiz" → chọn đáp án → xem giải thích
 4. **Xem danh sách**: Tab "Danh sách" → review tất cả từ đã học
 5. **Tracking**: Tab "Home" → xem stats (tổng từ, bài tập làm, độ chính xác)
 
 ## 🔧 Tính năng MVP
 
-- ✅ Thêm từ vựng (manual + auto từ Claude)
+- ✅ Thêm từ vựng (qua giao diện hoặc API)
 - ✅ Quiz random với 4 đáp án
 - ✅ Giải thích chi tiết (ví dụ, cách dùng)
 - ✅ Danh sách từ đã học
@@ -98,7 +98,6 @@ Tạo file `.env` trong folder `backend`:
 
 ```
 PORT=5000
-CLAUDE_API_KEY=your_key_here
 ```
 
 ## 📱 Mobile-friendly
