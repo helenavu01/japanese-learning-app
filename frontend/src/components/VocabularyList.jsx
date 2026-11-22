@@ -1,3 +1,4 @@
+import { API_URL } from '../api';
 import { useState, useEffect } from 'react';
 
 function VocabularyList() {
@@ -10,7 +11,7 @@ function VocabularyList() {
 
   const fetchVocabs = async () => {
     try {
-      const res = await fetch('/api/vocabulary');
+      const res = await fetch(`${API_URL}/api/vocabulary`);
       const data = await res.json();
       setVocabs(data);
     } catch (err) {

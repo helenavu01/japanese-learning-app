@@ -1,3 +1,4 @@
+import { API_URL } from './api';
 import { useState, useEffect } from 'react';
 import Quiz from './components/Quiz';
 import Home from './components/Home';
@@ -15,7 +16,7 @@ function App() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch('/api/stats');
+      const res = await fetch(`${API_URL}/api/stats`);
       const data = await res.json();
       setStats(data);
     } catch (err) {

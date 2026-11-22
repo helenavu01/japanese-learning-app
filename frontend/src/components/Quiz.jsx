@@ -1,3 +1,4 @@
+import { API_URL } from '../api';
 import { useState, useEffect } from 'react';
 
 function Quiz({ onAnswered }) {
@@ -15,7 +16,7 @@ function Quiz({ onAnswered }) {
     setResult(null);
     setSelectedAnswer(null);
     try {
-      const res = await fetch('/api/quiz/random');
+      const res = await fetch(`${API_URL}/api/quiz/random`);
       const data = await res.json();
       if (data.id) {
         setQuiz(data);
@@ -32,7 +33,7 @@ function Quiz({ onAnswered }) {
   const handleAnswer = async (answer) => {
     setSelectedAnswer(answer);
     try {
-      const res = await fetch(`/api/quiz/${quiz.id}/answer`, {
+      const res = await fetch(`${API_URL}/api/quiz/${quiz.id}/answer`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ answer }),

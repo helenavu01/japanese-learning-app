@@ -1,3 +1,4 @@
+import { API_URL } from '../api';
 import { useState } from 'react';
 
 function AddVocabulary({ onAdded }) {
@@ -23,7 +24,7 @@ function AddVocabulary({ onAdded }) {
     setMessage('');
 
     try {
-      const res = await fetch('/api/vocabulary', {
+      const res = await fetch(`${API_URL}/api/vocabulary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
